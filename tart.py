@@ -42,6 +42,8 @@ for nation in nations:
     for endo in endos:
         if endo in exclude:
             continue
+        elif endo not in nations:
+            continue
         elif endo in endos_given:
             endos_given[endo] += 1
         else:
