@@ -33,20 +33,21 @@ def calculate_slackers(state):
         endos = get_endorsements(state, nation)
         diff = members.difference(endos)
         diff.discard(nation)
-        slackers[nation] = list(diff)
+        slackers[nation] = sorted(list(diff))
 
     return slackers
 
 def calculate_endorsers(state):
     sets = [get_endorsements(state, nation) for nation in nations]
-    return sorted(list(set.intersection(*sets)))
+    members = get_members(state)
+    return sorted(list(members.intersection(*sets)))
 
 def calculate_tart(state):
     members = get_members(state)
 
     endos_given = {}
-    for nation in members:
-        endos = get_endorsements(state, nation)
+    for nation in state["nations"]:
+        endos = nation["endorsements"]
 
         for endo in endos:
             if endo in nations:
