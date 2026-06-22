@@ -82,7 +82,7 @@ if response.status_code != 200:
 state = json.loads(response.text)
 build_and_save_output(state)
 
-for event in create_sse_feed(f"{retina_url}/sse/wadmit+wresign+wkick+ncte+wendo+wunendo+move+ndel+rdel+ldel/region:{region}"):
+for event in create_sse_feed(f"{retina_url}/sse/region:{region}"):
     obj = json.loads(event.data)
     for name, state in obj["state"].items():
         if name == region:
