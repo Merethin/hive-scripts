@@ -20,7 +20,7 @@ def get_endorsements(state, nation):
         if n["name"] == nation:
             return set(n["endorsements"])
 
-    return set()
+    return None
 
 def get_members(state):
     return set([n["name"] for n in state["nations"]])
@@ -31,6 +31,10 @@ def calculate_slackers(state):
     slackers = {}
     for nation in nations:
         endos = get_endorsements(state, nation)
+        if endos is None:
+            slackers[nation] = []
+            continue
+
         diff = members.difference(endos)
         diff.discard(nation)
         slackers[nation] = sorted(list(diff))
@@ -38,7 +42,7 @@ def calculate_slackers(state):
     return slackers
 
 def calculate_endorsers(state):
-    sets = [get_endorsements(state, nation) for nation in nations]
+    sets = filter(lambda a: a is not None, [get_endorsements(state, nation) for nation in nations])
     members = get_members(state)
     return sorted(list(members.intersection(*sets)))
 
